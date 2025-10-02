@@ -93,6 +93,8 @@ export class InfrastructureStack extends cdk.Stack {
       defaultBehavior: {
         origin: new origins.LoadBalancerV2Origin(fargateService.loadBalancer),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        cachePolicy: cloudfront.CachePolicy.USE_ORIGIN_CACHE_CONTROL_HEADERS,
+        originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER,
       },
       domainNames: ["hansonwg.com"],
       certificate: certificate,

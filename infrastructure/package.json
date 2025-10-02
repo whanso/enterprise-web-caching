@@ -6,12 +6,14 @@
   },
   "scripts": {
     "build": "tsc",
+    "build:express": "cd ../express-app && npm run build",
+    "build:all": "npm run build && npm run build:express",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
     "esbuild:token": "esbuild --bundle --platform=node ../lambda/index.ts --outfile=../lambda/index.js",
     "esbuild:all": "npm run esbuild:token",
-    "deploy": "cdk deploy --require-approval never",
+    "deploy": "npm run build:all && cdk deploy --require-approval never",
     "destroy": "cdk destroy --force"
   },
   "devDependencies": {
