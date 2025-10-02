@@ -52,11 +52,6 @@ export class InfrastructureStack extends cdk.Stack {
         "arn:aws:acm:us-east-1:266345157701:certificate/3b64b967-7ed9-4a18-91fa-b3737be5a20c"
       );
 
-    const albSecurityGroup = new ec2.SecurityGroup(this, 'AlbSecurityGroup', {
-      vpc: vpc,
-      allowAllOutbound: true,
-    });
-
     const fargateService =
       new ecs_patterns.ApplicationLoadBalancedFargateService(
         this,
@@ -69,11 +64,17 @@ export class InfrastructureStack extends cdk.Stack {
           protocol: elbv2.ApplicationProtocol.HTTPS,
           redirectHTTP: true,
           certificate: certificate,
-          publicLoadBalancer: false,
-          securityGroups: [albSecurityGroup],
-          loadBalancerName: 'my-unique-load-balancer-name',
+          publicLoadBalancer: true,
+          openListener: true,
         }
       );
+
+    const albSecurityGroup = new ec2.SecurityGroup(this, 'AlbSecurityGroup', {
+      vpc: vpc,
+      allowAllOutbound: true,
+    });
+
+    fargateService.loadBalancer.addSecurityGroup(albSecurityGroup);
 
     const cloudFrontPrefixList = ec2.PrefixList.fromLookup(
       this,
