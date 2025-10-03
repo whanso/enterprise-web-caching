@@ -1,8 +1,8 @@
 import express from "express";
-import { marked } from "marked";
 import * as fs from "fs";
-import * as path from "path";
+import { marked } from "marked";
 import Mustache from "mustache";
+import * as path from "path";
 import { securityHeaders } from "./utilities";
 
 const app = express();
@@ -24,7 +24,10 @@ app.get("/", (_req, res) => {
       date: new Date().toISOString(),
     });
     const html = marked(renderedMarkdown);
-    res.send(html);
+    const jqueryScript = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>';
+    const finalHtml = jqueryScript + html;
+    console.log(finalHtml);
+    res.send(finalHtml);
   });
 });
 
