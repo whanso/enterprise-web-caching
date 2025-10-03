@@ -6,7 +6,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:express": "cd ../express-app && npm run build",
+    "build:express": "cd ../ && npm run build",
     "build:all": "npm run build && npm run build:express",
     "watch": "tsc -w",
     "test": "jest",

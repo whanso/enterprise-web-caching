@@ -35,7 +35,7 @@ export class InfrastructureStack extends cdk.Stack {
 
     const container = taskDefinition.addContainer("MyContainer", {
       image: ecs.ContainerImage.fromAsset(
-        path.join(__dirname, "../../express-app")
+        path.join(__dirname, "../../")
       ),
       logging: new ecs.AwsLogDriver({ streamPrefix: "express-app" }),
     });
@@ -69,7 +69,7 @@ export class InfrastructureStack extends cdk.Stack {
         }
       );
 
-    const albSecurityGroup = new ec2.SecurityGroup(this, 'AlbSecurityGroup', {
+    const albSecurityGroup = new ec2.SecurityGroup(this, "AlbSecurityGroup", {
       vpc: vpc,
       allowAllOutbound: true,
     });
