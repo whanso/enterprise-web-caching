@@ -1,20 +1,15 @@
 {
-  "name": "infrastructure",
+  "name": "cdk",
   "version": "0.1.0",
   "bin": {
-    "infrastructure": "bin/infrastructure.js"
+    "cdk": "bin/cdk.js"
   },
   "scripts": {
     "build": "tsc",
-    "build:express": "cd ../ && npm run build",
-    "build:all": "npm run build && npm run build:express",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "esbuild:token": "esbuild --bundle --platform=node ../lambda/index.ts --outfile=../lambda/index.js",
-    "esbuild:all": "npm run esbuild:token",
-    "deploy": "npm run build:all && cdk deploy --require-approval never",
-    "destroy": "cdk destroy --force"
+    "deploy": "cdk deploy --require-approval never"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
