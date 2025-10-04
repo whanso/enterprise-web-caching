@@ -11,8 +11,6 @@ const port = 3000;
 app.use(securityHeaders);
 
 app.get("/", (_req, res) => {
-  res.setHeader("Cache-Control", "public, max-age=120");
-
   const filePath = path.join(__dirname, "content.md");
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
@@ -24,10 +22,10 @@ app.get("/", (_req, res) => {
       date: new Date().toISOString(),
     });
     const html = marked(renderedMarkdown);
-    const jqueryScript =
-      '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>';
-    const finalHtml = jqueryScript + html;
-    res.send(finalHtml);
+    // const jqueryScript =
+    //   '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>';
+    // const finalHtml = jqueryScript + html;
+    res.send(html);
   });
 });
 

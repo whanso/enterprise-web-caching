@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
-// securityHeaders.js
 export function securityHeaders(
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ) {
@@ -11,7 +10,7 @@ export function securityHeaders(
   // Helps prevent XSS attacks by locking down allowed origins.
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' ajax.googleapis.com; style-src 'self'; img-src 'self'; frame-ancestors 'none'"
+    "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; frame-ancestors 'none'"
   );
 
   // Strict-Transport-Security (HSTS)
