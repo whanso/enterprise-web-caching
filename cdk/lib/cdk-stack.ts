@@ -60,6 +60,8 @@ export class CdkStack extends cdk.Stack {
           cluster: cluster,
           taskDefinition: taskDefinition,
           desiredCount: 1,
+          minHealthyPercent: 50,
+          maxHealthyPercent: 100,
           assignPublicIp: false,
           protocol: elbv2.ApplicationProtocol.HTTPS,
           redirectHTTP: true,
@@ -68,6 +70,15 @@ export class CdkStack extends cdk.Stack {
           openListener: true,
         }
       );
+
+    fargateService.service.autoScaleTaskCount({
+      minCapacity: 1,
+      maxCapacity: 2,
+    }).scaleOnCpuUtilization('CpuScaling', {
+      targetUtilizationPercent: 50,
+      scaleInCooldown: cdk.Duration.seconds(60),
+      scaleOutCooldown: cdk.Duration.seconds(60),
+    });
 
     const albSecurityGroup = new ec2.SecurityGroup(this, "AlbSecurityGroup", {
       vpc: vpc,
