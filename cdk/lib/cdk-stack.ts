@@ -34,9 +34,7 @@ export class CdkStack extends cdk.Stack {
     });
 
     const container = taskDefinition.addContainer("MyContainer", {
-      image: ecs.ContainerImage.fromAsset(
-        path.join(__dirname, "../../")
-      ),
+      image: ecs.ContainerImage.fromAsset(path.join(__dirname, "../../")),
       logging: new ecs.AwsLogDriver({ streamPrefix: "express-app" }),
     });
 
@@ -61,7 +59,7 @@ export class CdkStack extends cdk.Stack {
           taskDefinition: taskDefinition,
           desiredCount: 1,
           minHealthyPercent: 50,
-          maxHealthyPercent: 100,
+          maxHealthyPercent: 200,
           assignPublicIp: false,
           protocol: elbv2.ApplicationProtocol.HTTPS,
           redirectHTTP: true,
@@ -71,14 +69,16 @@ export class CdkStack extends cdk.Stack {
         }
       );
 
-    fargateService.service.autoScaleTaskCount({
-      minCapacity: 1,
-      maxCapacity: 2,
-    }).scaleOnCpuUtilization('CpuScaling', {
-      targetUtilizationPercent: 50,
-      scaleInCooldown: cdk.Duration.seconds(60),
-      scaleOutCooldown: cdk.Duration.seconds(60),
-    });
+    fargateService.service
+      .autoScaleTaskCount({
+        minCapacity: 1,
+        maxCapacity: 2,
+      })
+      .scaleOnCpuUtilization("CpuScaling", {
+        targetUtilizationPercent: 50,
+        scaleInCooldown: cdk.Duration.seconds(60),
+        scaleOutCooldown: cdk.Duration.seconds(60),
+      });
 
     const albSecurityGroup = new ec2.SecurityGroup(this, "AlbSecurityGroup", {
       vpc: vpc,
@@ -104,7 +104,8 @@ export class CdkStack extends cdk.Stack {
       defaultBehavior: {
         origin: new origins.LoadBalancerV2Origin(fargateService.loadBalancer),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.USE_ORIGIN_CACHE_CONTROL_HEADERS,
+        cachePolicy:
+          cloudfront.CachePolicy.USE_ORIGIN_CACHE_CONTROL_HEADERS_QUERY_STRINGS, // Ensures separate keys for CDN cache for artillery testing.
         originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER,
       },
       domainNames: ["hansonwg.com"],

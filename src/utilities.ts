@@ -61,7 +61,7 @@ export function securityHeaders(
 
   // Cache-Control
   // Prevents sensitive content from being cached locally or by proxies.
-  // Useful for banking, dashboards, and authenticated pages.
-  // res.setHeader("Cache-Control", "no-store");
+  // "no-store": Useful for banking, dashboards, and authenticated pages.
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   next();
 }

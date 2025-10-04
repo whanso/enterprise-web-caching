@@ -7,7 +7,8 @@
     "start": "node dist/src/index.js",
     "build": "tsc",
     "dev": "tsx watch src/index.ts",
-    "deploy": "cd cdk && npm install && npm run deploy"
+    "deploy": "cd cdk && npm install && npm run deploy",
+    "loadtest": "npx @dotenvx/dotenvx run -- npx artillery run ecs-root-query.yml --record"
   },
   "keywords": [],
   "author": "",

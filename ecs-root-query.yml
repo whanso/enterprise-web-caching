@@ -1,0 +1,19 @@
+config:
+  target: "$ARTILLERY_TARGET"
+  phases:
+    - duration: 60
+      arrivalRate: 50 # warm-up
+      rampTo: 500
+    - duration: 300
+      arrivalRate: 500 # sustained load to trigger ECS scale
+  defaults:
+    headers:
+      User-Agent: "Artillery-ECS-RootTest/1.0"
+      Cache-Control: "no-cache"
+      Pragma: "no-cache"
+
+scenarios:
+  - name: "Root-only with query param cache-busting"
+    flow:
+      - get:
+          url: "/?t={{ $timestamp }}"
