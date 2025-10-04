@@ -24,9 +24,9 @@ app.get("/", (_req, res) => {
       date: new Date().toISOString(),
     });
     const html = marked(renderedMarkdown);
-    const jqueryScript = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>';
+    const jqueryScript =
+      '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>';
     const finalHtml = jqueryScript + html;
-    console.log(finalHtml);
     res.send(finalHtml);
   });
 });
