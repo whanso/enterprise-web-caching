@@ -27,6 +27,7 @@
     "@aws-cdk/aws-elasticloadbalancingv2": "^1.126.0",
     "aws-cdk-lib": "2.215.0",
     "constructs": "^10.0.0",
+    "dotenv": "^17.2.3",
     "esbuild": "^0.25.10",
     "npmcli": "^1.2.2"
   }
